@@ -1,0 +1,16 @@
+# Logs
+logs
+*.log
+
+# System Files
+.DS_Store
+
+# Temp files
+.sass-cache
+.tmp
+
+# Project files
+/.env
+/.env-test
+node_modules
+.logs
