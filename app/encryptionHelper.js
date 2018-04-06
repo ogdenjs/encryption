@@ -63,9 +63,9 @@ async function encryptEnvelope(plainValue){
   const {CiphertextBlob, Plaintext} = dataKeyResult
 
   const encryptedKey = CiphertextBlob.toString('base64')
-  const plainKey = Plaintext.toString('base64')
+  let plainKey = Plaintext.toString('base64')
   const encryptedValue = encrypt(plainValue, plainKey)
-
+  plainKey = ''
   return {
     awsKmsArn: process.env.AWS_KMS_ARN, //full arn of the key used to encrypt the encryptedKey (in case we ever have multiple AWS keys)
     encryptedValue, //encrypted by the plain text key that comes from the encryptedKey
@@ -85,8 +85,9 @@ async function decryptEnvelope(envelope){
     CiphertextBlob: Buffer.from(encryptedKey, 'base64'),
   }).promise()
 
-  const plainKey = keyDecryptResult.Plaintext.toString('base64')
+  let plainKey = keyDecryptResult.Plaintext.toString('base64')
   const decryptedValue = decrypt(encryptedValue, plainKey)
+  plainKey = ''
   const plainValue = decryptedValue.toString('utf8')
   return plainValue
 }
